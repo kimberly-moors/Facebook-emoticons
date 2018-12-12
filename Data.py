@@ -11,6 +11,10 @@ dataset= pd.read_csv(dataset)
 X=dataset.loc[:,['STATUS', 'cEXT']]
 y = dataset.index
 
+for i in X: 																					#labeling 0 = introvert, 1= extravert
+	if X.cEXT == 'y':
+	 	int(row)
+
 #Count Vectorizer features
 vec=CountVectorizer()
 Z=vec.fit_transform(X['STATUS'])    															#probleem = geen utf-code
