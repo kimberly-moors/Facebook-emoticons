@@ -13,7 +13,18 @@ y = dataset.index
 
 for i in X: 																					#labeling 0 = introvert, 1= extravert
 	if X.cEXT == 'y':
-	 	int(row)
+	 	print(row)
+
+#Which smileys appear in my data?															
+j= 0														
+for string in X['STATUS']:									
+	i=0															
+	if ':@' in string: 																		
+		i=+1											
+		j+=1 																				
+		print(string)
+print(j)
+
 
 #Count Vectorizer features
 vec=CountVectorizer()
@@ -25,13 +36,5 @@ features= (pd.DataFrame(Z.toarray(),columns=vec.get_feature_names()))
 X1,X2,y1,y2=train_test_split(X,y, random_state=1, train_size=0.9)
 trainingset= X1
 testset= X2
-for string in dataset:
-	if ':)' in dataset: print ('yes')
 
 
-
-			
-
-
-
-#print(X.loc[8,'STATUS'].split())
