@@ -13,3 +13,7 @@ y = dataset.index
 X1,X2,y1,y2=train_test_split(X,y, random_state=1, train_size=0.9)
 trainingset= X1
 testset= X2
+#Count Vectorizer features
+vec=CountVectorizer()
+Z=vec.fit_transform(X['STATUS'].head(100))
+features= (pd.DataFrame(Z.toarray(),columns=vec.get_feature_names()))
