@@ -20,6 +20,8 @@ for string in dataset:
 A = (trainingset.loc[trainingset.cEXT != 'y',:])	
 print (A.loc[A.cEXT != 'n',:])				#print de kolom van de data die een bepaalde waarde heeft in een andere kolom
 #print(testset.loc[testset.cEXT=='n',:])
+
+
 #Count Vectorizer features
 vec=CountVectorizer()
 Z=vec.fit_transform(X['STATUS'].head(100))
