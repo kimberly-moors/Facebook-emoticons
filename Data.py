@@ -15,17 +15,6 @@ if __name__ == "__main__":
 	y= le.fit_transform(dataset['cEXT'],y)				
 
 
-#Which smileys appear in my data?															
-j= 0														
-for string in X['STATUS']:									
-	i=0															
-	if ':@' in string: 																		
-		i=+1											
-		j+=1 																				
-		print(string)
-print(j)
-
-
 #Count Vectorizer features
 vec=CountVectorizer()
 Z=vec.fit_transform(X['STATUS'])    															#probleem = geen utf-code
