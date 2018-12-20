@@ -4,7 +4,6 @@ import sklearn as sk
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.preprocessing import LabelEncoder as le
 from sklearn.preprocessing import LabelEncoder
 
 if __name__ == "__main__":
