@@ -4,16 +4,16 @@ import sklearn as sk
 import numpy as np
 from sklearn.cross_validation import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.preprocessing import LabelEncoder as le
 
+if __name__ == "__main__":
 
-dataset= open ("D:\Thesis\mypersonality_final\mypersonality_final2.csv")
-dataset= pd.read_csv(dataset)
-X=dataset.loc[:,['STATUS', 'cEXT']]
-y = dataset.index
+	file= open ("D:\Thesis\mypersonality_final\mypersonality_final2.csv", encoding='latin-1')
+	dataset= pd.read_csv(file)
+	X = dataset.loc[:, ['STATUS']]
+	y= dataset.cEXT	
+	y= le.fit_transform(dataset['cEXT'],y)				
 
-for i in X: 																					#labeling 0 = introvert, 1= extravert
-	if X.cEXT == 'y':
-	 	print(row)
 
 #Which smileys appear in my data?															
 j= 0														
