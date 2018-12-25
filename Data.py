@@ -5,7 +5,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder
+from sklearn.pipeline import FeatureUnion, Pipeline
 from dictfeaturizer import *
+from sklearn.linear_model import LinearRegression
 
 if __name__ == "__main__":
 
@@ -27,5 +29,9 @@ if __name__ == "__main__":
 	features= (pd.DataFrame(Z.toarray(), columns=vec.get_feature_names()))
 
 	#LIWC features
-	dictf= DictFeaturizer(dictionary= trainingset)			#loopt vast. In de trainingset in rij testset bij rij 110 ()
+	dictf= DictFeaturizer(dictionary= trainingset)		
 
+	#feature pipeline
+	estimators=[('vec', CountVectorizer()), ('dict', DictFeaturizer(trainingset))]
+	pip=FeatureUnion(estimators)
+	pipy = pip.fit(trainingset, y1)
