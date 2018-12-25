@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder
+from dictfeaturizer import *
 
 if __name__ == "__main__":
 
@@ -22,8 +23,9 @@ if __name__ == "__main__":
 
 	#Countvecorizer
 	vec=CountVectorizer() 
-	Z=vec.fit_transform(X['STATUS'].head(700))    															#probleem = geen utf-code
+	Z=vec.fit_transform(trainingset['STATUS'])  															
 	features= (pd.DataFrame(Z.toarray(), columns=vec.get_feature_names()))
-	print(features)
 
+	#LIWC features
+	dictf= DictFeaturizer(dictionary= trainingset)			#loopt vast. In de trainingset in rij testset bij rij 110 ()
 
