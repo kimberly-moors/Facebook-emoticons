@@ -29,7 +29,22 @@ if __name__ == "__main__":
 	features= (pd.DataFrame(Z.toarray(), columns=vec.get_feature_names()))
 
 	#LIWC features
-	dictf= DictFeaturizer(dictionary= trainingset)		
+	file= open ("D:\Thesis\mypersonality_final\LIWC_English.csv",encoding='latin-1')
+	dictionary = csv.DictReader(file, delimiter=',')
+	dict_list = []
+	for line in dictionary:
+		dict_list.append(line)
+	itty = {}	
+	i=0	
+	for item in dict_list:
+		key= dict_list[i].values()
+		value=dict_list[i].values()
+		dictionaryX = {key, value}
+		i+=1
+		for item in dictionaryX:
+			lils = (list(item))
+			itty[(lils[0])] = lils[1]
+	dictf= DictFeaturizer(dictionary= itty)		
 
 	#feature pipeline
 	estimators=[('vec', CountVectorizer()), ('dict', DictFeaturizer(trainingset))]
