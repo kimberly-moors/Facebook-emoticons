@@ -48,5 +48,36 @@ if __name__ == "__main__":
 
 	#feature pipeline
 	estimators=[('vec', CountVectorizer()), ('dict', DictFeaturizer(trainingset))]
+
+	
+	#emoji features
+	def emoji_featurizer (dataset):
+		#the emoji's placed into a dictionary.
+		emojidictionary={}
+		emojidictionary['happy']= [':)',':]','XD',':-)','^_^',':D',':P','xD',':}',':>', '=)']
+		emojidictionary['random']= ['<3',':$',':o']
+		emojidictionary['winking']= [';)',';-)']
+		emojidictionary['neutral']= [':|','-.-']
+		emojidictionary['sad']= [':(',':[',':-(','=(',':{','://',":\'(",':c']
+		emojidictionary['angry']= ['^^',':@',':S','>:(','-_-']
+		emojis = []
+		lines=[]
+		yoepi=[]
+
+		for value in emojidictionary.values():
+			for v in value:
+				emojis.append(v)
+		for line in dataset['STATUS']:
+			words=line.split(" ")
+			for word in words:
+				yoepi.append(word)
+				for value in emojidictionary.values():
+					for x in value:
+						if x in yoepi:
+							lines.append(line)
+		return(lines)
+	
+
+	emoji= emoji_featurizer(trainingset)
 	pip=FeatureUnion(estimators)
 	pipy = pip.fit(trainingset, y1)
