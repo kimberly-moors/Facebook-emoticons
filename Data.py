@@ -7,6 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder
 from sklearn.pipeline import FeatureUnion, Pipeline
 from dictfeaturizer import *
+from emojifeaturizer import *
 from sklearn.linear_model import LinearRegression
 
 if __name__ == "__main__":
