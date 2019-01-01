@@ -55,5 +55,11 @@ if __name__ == "__main__":
 	X1,X2,y1,y2=train_test_split(emoji,y, random_state=1, train_size=0.9, test_size=0.1)
 	testset= X2
 	
+	pp=model.predict(testset)
+	print(accuracy_score(y2,pp))
 
+	pp=model_2.predict(testset)
+	print(accuracy_score(y2,pp))
 
+	pp=model_3.predict(testset)
+	print(accuracy_score(y2,pp))
