@@ -15,13 +15,14 @@ def emoji_featurizer (dataset):
 	sad=[]
 	angry=[]
 
-	dataset.insert(1,'EMOJINR', 0)
+	
 	dataset.insert(1,'HAPPY',0)
 	dataset.insert(1,'RANDOM',0)
 	dataset.insert(1,'WINKING',0)
 	dataset.insert(1,'NEUTRAL',0)
 	dataset.insert(1,'SAD',0)
 	dataset.insert(1,'ANGRY',0)
+	dataset.insert(1,'EMOJINR', 0)
 		
 	for value in emojidictionary.values():
 		for v in value:
@@ -82,5 +83,5 @@ def emoji_featurizer (dataset):
 	dataset['SAD'] = sad
 	dataset['ANGRY'] = angry
 	dataset['EMOJINR'] = (dataset['HAPPY']+dataset['SAD']+dataset['ANGRY'])
-
+	del dataset['STATUS']
 	return(dataset)
