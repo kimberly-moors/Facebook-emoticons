@@ -53,13 +53,26 @@ if __name__ == "__main__":
 
 	#train-test-split
 	X1,X2,y1,y2=train_test_split(emoji,y, random_state=1, train_size=0.9, test_size=0.1)
+	trainingset= X1
 	testset= X2
 	
+	#KNN
+	model=KNeighborsClassifier(n_neighbors=4)
+	model.fit(trainingset,y1)
+	ss= cross_val_score(model, trainingset, y1, cv=10)
 	pp=model.predict(testset)
 	print(accuracy_score(y2,pp))
 
+	#SVM
+	model_2= svm.SVC(gamma='scale')
+	model_2.fit(trainingset,y1)
+	tt=cross_val_score(model_2,trainingset,y1,cv=10)
 	pp=model_2.predict(testset)
 	print(accuracy_score(y2,pp))
 
+	#Logistic Regression
+	model_3=LogisticRegression(random_state=0, solver='lbfgs')
+	model_3.fit(trainingset,y1)
+	tt=cross_val_score(model_3, trainingset,y1,cv=10)
 	pp=model_3.predict(testset)
 	print(accuracy_score(y2,pp))
