@@ -7,7 +7,6 @@ def emoji_featurizer (dataset):
 	emojidictionary['neutral']= [':|','-.-']
 	emojidictionary['sad']= [':(',':[',':-(','=(',':{','://',":\'(",':c']
 	emojidictionary['angry']= ['^^',':@',':S','>:(','-_-']
-	emojis=[]
 	happy=[]
 	random=[]
 	winking=[]
@@ -15,18 +14,10 @@ def emoji_featurizer (dataset):
 	sad=[]
 	angry=[]
 
-	
-	dataset.insert(1,'HAPPY',0)
-	dataset.insert(1,'RANDOM',0)
-	dataset.insert(1,'WINKING',0)
-	dataset.insert(1,'NEUTRAL',0)
-	dataset.insert(1,'SAD',0)
-	dataset.insert(1,'ANGRY',0)
+	for key in emojidictionary.keys():
+		dataset.insert(1,key, 0)
 	dataset.insert(1,'EMOJINR', 0)
 		
-	for value in emojidictionary.values():
-		for v in value:
-			emojis.append(v)
 
 	for line in dataset['STATUS']:
 		words=line.split(" ")
@@ -76,12 +67,12 @@ def emoji_featurizer (dataset):
 		neutral.append(n)
 		sad.append(s)
 		angry.append(a)
-	dataset['HAPPY'] = happy
-	dataset['RANDOM'] = random
-	dataset['WINKING'] = winking
-	dataset['NEUTRAL'] = neutral
-	dataset['SAD'] = sad
-	dataset['ANGRY'] = angry
-	dataset['EMOJINR'] = (dataset['HAPPY']+dataset['SAD']+dataset['ANGRY'])
+	dataset['happy'] = happy
+	dataset['random'] = random
+	dataset['winking'] = winking
+	dataset['neutral'] = neutral
+	dataset['sad'] = sad
+	dataset['angry'] = angry
+	dataset['EMOJINR'] = (dataset['happy']+dataset['sad']+dataset['angry']+dataset['random']+dataset['neutral']+dataset['winking'])
 	del dataset['STATUS']
 	return(dataset)
