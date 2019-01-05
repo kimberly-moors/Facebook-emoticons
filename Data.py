@@ -58,13 +58,6 @@ if __name__ == "__main__":
 	emoji= emoji_featurizer(D)
 
 
-	#models
-
-	
-	model_3=LogisticRegression(random_state=0, solver='lbfgs', max_iter=300)
-	
-
-
 	#train-test-split
 	X1,X2,y1,y2=train_test_split(emoji,y, random_state=1, train_size=0.9, test_size=0.1)
 	trainingset= X1
@@ -306,6 +299,7 @@ if __name__ == "__main__":
 
 	#Logistic Regression
 	print('LR Emoji')
+	model_3=LogisticRegression(random_state=0, solver='lbfgs', max_iter=300)
 	model_3.fit(trainingset,y1)
 	pp=model_3.predict(testset)
 	ss=cross_val_score(model_3, trainingset,y1,cv=10)
