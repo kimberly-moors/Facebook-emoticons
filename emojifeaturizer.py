@@ -33,33 +33,21 @@ def emoji_featurizer (dataset):
 			for value in emojidictionary['happy']:
 				if value in yoepi:
 					h+=1
-				else:
-					None
 			for value in emojidictionary['random']:
 				if value in yoepi:
 					r+=1
-				else:
-					None
 			for value in emojidictionary['winking']:
 				if value in yoepi:
 					w+=1
-				else:
-					None
 			for value in emojidictionary['neutral']:
 				if value in yoepi:
 					n+=1
-				else:
-					None
 			for value in emojidictionary['sad']:
 				if value in yoepi:
 					s+=1
-				else:
-					None
 			for value in emojidictionary['angry']:
 				if value in yoepi:
 					a+=1
-				else:
-					None
 
 		happy.append(h)
 		random.append(r)
