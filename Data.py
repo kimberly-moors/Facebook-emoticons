@@ -7,7 +7,6 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import CountVectorizer
 from dictfeaturizer import *
-from pfffff import *
 from emojifeaturizer import *
 
 from sklearn.model_selection import train_test_split, cross_val_score, cross_validate, learning_curve, GridSearchCV
@@ -16,7 +15,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import svm
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, recall_score, roc_auc_score, mean_absolute_error, classification_report, f1_score
-from emoji_gone import *
 
 if __name__ == "__main__":
 
@@ -56,8 +54,13 @@ if __name__ == "__main__":
   	#KNN
 	def KNN_model(featureset, y):
 		trainingset, testset, y1, y2 = train_test_features(featureset, y)
-		model = KNeighborsClassifier(n_neighbors = 2)
+		model = KNeighborsClassifier()
+		k_range=list(range(1,5))
+		param_grid=dict(n_neighbors=k_range)
+		model = GridSearchCV(model, param_grid, cv=10, scoring='accuracy')
 		model.fit (trainingset,y1)
+		pan = model.best_params_
+		pan2= model.best_estimator_
 		ss = cross_val_score(model,trainingset,y1, cv = 10)
 		pp = model.predict(testset)
 		acc = accuracy_score(y2,pp)
@@ -67,13 +70,17 @@ if __name__ == "__main__":
 		roc = roc_auc_score(y2,pp)
 		MAE = mean_absolute_error(y2,pp)
 		F1 = f1_score(y2,pp)
-		return('KNN results:', 'crossvalidation =', ss, 'accuracy =', acc, 'confusion matrix =', conf, 'precision =', prec, 'recall =', rec, "roc =", roc, 'MAE =', MAE, 'F1 =', F1 )
+		return('KNN results:', pan, pan2, 'crossvalidation =', ss, 'accuracy =', acc, 'confusion matrix =', conf, 'precision =', prec, 'recall =', rec, "roc =", roc, 'MAE =', MAE, 'F1 =', F1 )
  
 	#SVMs
 	def SVMs_model(featureset,y):
 		trainingset, testset, y1, y2 = train_test_features(featureset, y)
-		model= svm.SVC(C=10, gamma='scale', kernel='rbf')
+		model= svm.SVC()
+		param_grid = {'C':[1,10,100,1000], 'kernel':['linear','rbf']}
+		model = GridSearchCV(svm.SVC(gamma='scale'),param_grid, refit = True, verbose=2)
 		model.fit(trainingset,y1)
+		pan= model.best_params_
+		pan2= model.best_score_
 		ss = cross_val_score(model,trainingset,y1, cv = 10)
 		pp = model.predict(testset)
 		acc = accuracy_score(y2,pp)
@@ -83,13 +90,17 @@ if __name__ == "__main__":
 		roc = roc_auc_score(y2,pp)
 		MAE = mean_absolute_error(y2,pp)
 		F1 = f1_score(y2,pp)
-		return('SVMs results:', 'crossvalidation =', ss, 'accuracy =', acc, 'confusion matrix =', conf, 'precision =', prec, 'recall =', rec, "roc =", roc, 'MAE =', MAE, 'F1 =', F1 )
+		return('SVMs results:', pan, pan2,'crossvalidation =', ss, 'accuracy =', acc, 'confusion matrix =', conf, 'precision =', prec, 'recall =', rec, "roc =", roc, 'MAE =', MAE, 'F1 =', F1 )
  
    #Logistic Regression
 	def LR_model(featureset, y):
 		trainingset, testset, y1, y2 = train_test_features(featureset, y)		
-		model = LogisticRegression(random_state=0, solver='lbfgs', max_iter=300)
+		model = LogisticRegression()
+		param_grid = {'solver':['liblinear', 'lbfgs', 'saga']}
+		model = GridSearchCV(LogisticRegression(random_state=0, max_iter=300),param_grid, cv=10)
 		model.fit(trainingset,y1)
+		pan = model.best_params_
+		pan2 = model.best_score_
 		ss = cross_val_score(model,trainingset,y1, cv = 10)
 		pp = model.predict(testset)
 		acc = accuracy_score(y2,pp)
@@ -99,7 +110,7 @@ if __name__ == "__main__":
 		roc = roc_auc_score(y2,pp)
 		MAE = mean_absolute_error(y2,pp)
 		F1 = f1_score(y2,pp)
-		return('LR results:', 'crossvalidation =', ss, 'accuracy =', acc, 'confusion matrix =', conf, 'precision =', prec, 'recall =', rec, "roc =", roc, 'MAE =', MAE, 'F1 =', F1 )
+		return('LR results:', pan, pan2, 'crossvalidation =', ss, 'accuracy =', acc, 'confusion matrix =', conf, 'precision =', prec, 'recall =', rec, "roc =", roc, 'MAE =', MAE, 'F1 =', F1 )
  
   	
   	#emoji features
@@ -111,7 +122,6 @@ if __name__ == "__main__":
  	
  	 #Countvecorizer
 	print ('CV FEATURIZER')
-	vec = CountVectorizer() 
 	Z = vec.fit_transform(dataset['STATUS'])  															
 	features = (pd.DataFrame(Z.toarray(), columns=vec.get_feature_names()))
 	print (KNN_model(features, y))
@@ -121,7 +131,6 @@ if __name__ == "__main__":
 	#LIWClike features
 	print ('DICT FEATURIZER')
 	dicty = dictff(X,itty)
-	print (KNN_model(dicty, y))
 	print (SVMs_model(dicty, y))
 	print (LR_model(dicty, y))
  	
@@ -146,15 +155,8 @@ if __name__ == "__main__":
 	print (SVMs_model(dictCV, y))
 	print (LR_model(dictCV, y))
  	
-	"""#emojifeaturizer+dictionary+CV
-	tres=pd.concat([dictCV,emoji], axis=1)
-	X1,X2,y13,y14=train_test_split(tres,y,random_state=1, train_size=0.9, test_size=0.1)
-	trainingset_7=X1
-	testset_7=X2
-	
-	
-
-	
-
-	
-
+	#emojifeaturizer+dictionary+CV
+	tres= pd.concat([dictCV,emoji], axis=1)
+	print (KNN_model(tres, y))
+	print (SVMs_model(tres, y))
+	print (LR_model(tres, y))
