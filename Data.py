@@ -122,6 +122,7 @@ if __name__ == "__main__":
  	
  	 #Countvecorizer
 	print ('CV FEATURIZER')
+	vec = CountVectorizer()
 	Z = vec.fit_transform(dataset['STATUS'])  															
 	features = (pd.DataFrame(Z.toarray(), columns=vec.get_feature_names()))
 	print (KNN_model(features, y))
@@ -131,6 +132,7 @@ if __name__ == "__main__":
 	#LIWClike features
 	print ('DICT FEATURIZER')
 	dicty = dictff(X,itty)
+	print (KNN_model(dicty, y))
 	print (SVMs_model(dicty, y))
 	print (LR_model(dicty, y))
  	
