@@ -55,10 +55,9 @@ if __name__ == "__main__":
 		y = the values of the testdata. A string of 0's and 1's indicating the category in which an entrance belongs. 
 		"""
 
-   		X1,X2,y1,y2 = train_test_split(featureset, y, random_state = 1, train_size = 0.9, test_size = 0.1)
-   		trainingset = X1
-   		testset = X2
-   		return (trainingset, testset, y1, y2)
+		X1,X2,y1,y2 = train_test_split(featureset, y, random_state = 1, train_size = 0.9, test_size = 0.1)
+		trainingset = X1
+		return (trainingset, testset, y1, y2)
   
   	#KNN
 	def KNN_model(featureset, y):
@@ -128,7 +127,7 @@ if __name__ == "__main__":
 		featureset = a dataset containing a list of features
 		y = the values of the testdata. A string of 0's and 1's indicating the category in which an entrance belongs. 
 		"""
-		
+
 		trainingset, testset, y1, y2 = train_test_features(featureset, y)		
 		model = LogisticRegression()
 		param_grid = {'solver':['liblinear', 'lbfgs', 'saga']}
