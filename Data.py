@@ -46,6 +46,15 @@ if __name__ == "__main__":
 
   	#Train test split in the data
 	def train_test_features(featureset,y):
+		"""This function splits the featureset into trainingdata (10\%) and testdata (90\%) along a specified random state divider of 1. 
+		Lateron the models will be trained and tested on the trainingdata through 10-fold cross validation. 
+		The testdata will be used as a held out dataset for final testing
+
+		parameters:
+		featureset = a dataset containing a list of features
+		y = the values of the testdata. A string of 0's and 1's indicating the category in which an entrance belongs. 
+		"""
+
    		X1,X2,y1,y2 = train_test_split(featureset, y, random_state = 1, train_size = 0.9, test_size = 0.1)
    		trainingset = X1
    		testset = X2
@@ -53,12 +62,20 @@ if __name__ == "__main__":
   
   	#KNN
 	def KNN_model(featureset, y):
+		""" This function creates the machine learning models for the KNN Classifier method. The function optimizes the model through Gridsearch.
+		Then, it computes the following results: accuracy, precision, recall, AUC, confusion matrix, F1, MAE.
+
+		parameters:
+		featureset = a dataset containing a list of features
+		y = the values of the testdata. A string of 0's and 1's indicating the category in which an entrance belongs. 
+		"""
+
 		trainingset, testset, y1, y2 = train_test_features(featureset, y)
 		model = KNeighborsClassifier()
-		k_range=list(range(1,5))
-		param_grid=dict(n_neighbors=k_range)
+		k_range = list(range(1,5))
+		param_grid = dict(n_neighbors=k_range)
 		model = GridSearchCV(model, param_grid, cv=10, scoring='accuracy')
-		model.fit (trainingset,y1)
+		model.fit(trainingset,y1)
 		pan = model.best_params_
 		pan2= model.best_estimator_
 		ss = cross_val_score(model,trainingset,y1, cv = 10)
@@ -74,13 +91,22 @@ if __name__ == "__main__":
  
 	#SVMs
 	def SVMs_model(featureset,y):
+		""" This function creates the machine learning models for the Support Vector Machines method (a Bag of Words Principle). 
+		The function optimizes the model through Gridsearch. Then, it computes the following results: accuracy, precision,
+		 recall, AUC, confusion matrix, F1, MAE.
+
+		parameters:
+		featureset = a dataset containing a list of features
+		y = the values of the testdata. A string of 0's and 1's indicating the category in which an entrance belongs. 
+		"""
+
 		trainingset, testset, y1, y2 = train_test_features(featureset, y)
-		model= svm.SVC()
+		model = svm.SVC()
 		param_grid = {'C':[1,10,100,1000], 'kernel':['linear','rbf']}
 		model = GridSearchCV(svm.SVC(gamma='scale'),param_grid, refit = True, verbose=2)
 		model.fit(trainingset,y1)
-		pan= model.best_params_
-		pan2= model.best_score_
+		pan = model.best_params_
+		pan2 = model.best_score_
 		ss = cross_val_score(model,trainingset,y1, cv = 10)
 		pp = model.predict(testset)
 		acc = accuracy_score(y2,pp)
@@ -94,6 +120,15 @@ if __name__ == "__main__":
  
    #Logistic Regression
 	def LR_model(featureset, y):
+		""" This function creates the machine learning models for the Logistic Regression method. 
+		The function optimizes the model through Gridsearch. Then, it computes the following results: accuracy, precision,
+		 recall, AUC, confusion matrix, F1, MAE.
+
+		parameters:
+		featureset = a dataset containing a list of features
+		y = the values of the testdata. A string of 0's and 1's indicating the category in which an entrance belongs. 
+		"""
+		
 		trainingset, testset, y1, y2 = train_test_features(featureset, y)		
 		model = LogisticRegression()
 		param_grid = {'solver':['liblinear', 'lbfgs', 'saga']}
@@ -120,8 +155,8 @@ if __name__ == "__main__":
 	print (SVMs_model(emoji, y))
 	print (LR_model(emoji, y))
  	
- 	 #Countvecorizer
-	print ('CV FEATURIZER')
+ 	 #Bag of Words
+	print ('BW FEATURIZER')
 	vec = CountVectorizer()
 	Z = vec.fit_transform(dataset['STATUS'])  															
 	features = (pd.DataFrame(Z.toarray(), columns=vec.get_feature_names()))
@@ -129,35 +164,36 @@ if __name__ == "__main__":
 	print (SVMs_model(features, y))
 	print (LR_model(features, y))
   
-	#LIWClike features
-	print ('DICT FEATURIZER')
+	#LIWC features
+	print ('LIWC FEATURIZER')
 	dicty = dictff(X,itty)
 	print (KNN_model(dicty, y))
 	print (SVMs_model(dicty, y))
 	print (LR_model(dicty, y))
  	
-	#emoji featurizer+dictionary
+	#emoji featurizer+LIWC
 	print ('EMODICT')
 	emodict = pd.concat([dicty, emoji], axis=1)
 	print (KNN_model(emodict, y))
 	print (SVMs_model(emodict, y))
 	print (LR_model(emodict, y))
  	
-	#emoji vectorizer + CV
-	print ('EMOCV')
+	#emoji vectorizer + Bag of Words
+	print ('EMO+BW')
 	emoCV = pd.concat([features,emoji], axis=1)
 	print (KNN_model(emoCV, y))
 	print (SVMs_model(emoCV, y))	
 	print (LR_model(emoCV, y))
  	
-	#dictionary + CV
-	print ('DICTCV')
+	#LIWC + BW
+	print ('LIWC+BW')
 	dictCV = pd.concat([dicty,features], axis=1)
 	print (KNN_model(dictCV, y))
 	print (SVMs_model(dictCV, y))
 	print (LR_model(dictCV, y))
  	
 	#emojifeaturizer+dictionary+CV
+	print ('TRES')
 	tres= pd.concat([dictCV,emoji], axis=1)
 	print (KNN_model(tres, y))
 	print (SVMs_model(tres, y))
